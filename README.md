@@ -275,7 +275,7 @@ Porque `localhost` siempre apunta hacia el mismo contenedor/servicio que hace la
 
 - ¿Cómo solucionaría el problema? 
 
-Revertir el cambio a de 'localhost` a `api`. Docker traduce automáticamente `api` como el nombre del servicio a su IP interna correspondiente. Después se reconstruye el servicio con docker compose down, up. 
+Revertir el cambio a de `localhost` a `api`. Docker traduce automáticamente `api` como el nombre del servicio a su IP interna correspondiente. Después se reconstruye el servicio con docker compose down, up. 
 
 - ¿Qué comando utilizaría para verificar las redes Docker? 
 
@@ -289,7 +289,7 @@ El puerto del contenedor es el puerto en el que la aplicación dentro del conten
 
 - ¿Por qué http://api:3000 funciona entre contenedores, mientras que http://localhost:3000 no representa correctamente al contenedor api? 
 
-“localhost” siempre se refiere al propio contenedor que hace la petición: si al configurar nginx se usase proxy_pass http://localhost:3000, estaría buscando un servicio escuchando en el puerto 3000 desde el mismo contenedor de nginx. “api” es el nombre del servicio configurado en compose.yaml, docker se encarga de traducir ese nombre a la ip interna real dentro de la red de Docker. 
+`localhost` siempre se refiere al propio contenedor que hace la petición: si al configurar nginx se usase proxy_pass http://localhost:3000, estaría buscando un servicio escuchando en el puerto 3000 desde el mismo contenedor de nginx. `api` es el nombre del servicio configurado en compose.yaml, docker se encarga de traducir ese nombre a la ip interna real dentro de la red de Docker. 
 
 - Explique la diferencia entre ports y expose en Docker Compose.
 
