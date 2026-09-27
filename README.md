@@ -87,7 +87,7 @@ La propiedad `ports` se utiliza publicar un puerto del contenedor hacia la máqu
 
 ## Explicación de localhost vs nombre del servicio Docker
 
-Localhost hace referencia a la propia maquina, pero, cuando se trabaja con contenedores localhost se limita al interior de cada contenedor. Mientras que el nombre del servicio en docker se define en el docker compose para que el contenedor sea reconocible dentro de la red interna de docker. Esto permite que diferentes contenedores puedan comunicarse entre si de forma sencilla sin necesidad de conocer sus direcciones ip.
+`localhost` hace referencia a la propia maquina, pero, cuando se trabaja con contenedores se limita al interior de cada contenedor. Mientras que el nombre del servicio en docker se define en el docker compose para que el contenedor sea reconocible dentro de la red interna de docker. Esto permite que diferentes contenedores puedan comunicarse entre si de forma sencilla sin necesidad de conocer sus direcciones ip.
 
 ## Evidencias de las pruebas realizadas.
 
@@ -291,9 +291,9 @@ El puerto del contenedor es el puerto en el que la aplicación dentro del conten
 
 `localhost` siempre se refiere al propio contenedor que hace la petición: si al configurar nginx se usase proxy_pass http://localhost:3000, estaría buscando un servicio escuchando en el puerto 3000 desde el mismo contenedor de nginx. `api` es el nombre del servicio configurado en compose.yaml, docker se encarga de traducir ese nombre a la ip interna real dentro de la red de Docker. 
 
-- Explique la diferencia entre ports y expose en Docker Compose.
+- Explique la diferencia entre `ports` y `expose` en Docker Compose.
 
-ports publica los puertos al host, haciendo que el puerto sea accesible desde fuera del entorno de Docker. 
+`ports` publica los puertos al host, haciendo que el puerto sea accesible desde fuera del entorno de Docker. 
 
-expose solo documenta el puerto para la red interna de Docker. No abre los puertos como sí lo hace ports. 
+`expose` solo documenta el puerto para la red interna de Docker. No abre los puertos como sí lo hace ports. 
 
