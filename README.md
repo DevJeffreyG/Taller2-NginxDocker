@@ -87,6 +87,8 @@ La propiedad `ports` se utiliza publicar un puerto del contenedor hacia la máqu
 
 ## Explicación de localhost vs nombre del servicio Docker
 
+Localhost hace referencia a la propia maquina, pero, cuando se trabaja con contenedores localhost se limita al interior de cada contenedor. Mientras que el nombre del servicio en docker se define en el docker compose para que el contenedor sea reconocible dentro de la red interna de docker. Esto permite que diferentes contenedores puedan comunicarse entre si de forma sencilla sin necesidad de conocer sus direcciones ip.
+
 ## Evidencias de las pruebas realizadas.
 
 ### Parte 2
@@ -259,39 +261,39 @@ Se modifica temporalmente Nginx para utilizar http://localhost:3000 en lugar de 
 
 - ¿Qué error obtiene? 
 
-       Un 502 Bad Gateway. Ngnix recibió la petición pero no obtuvo una respuesta válida del servidor al que intentó reenviarla (reverse proxy) 
+Se obtiene un 502 Bad Gateway. Ngnix recibió la petición pero no obtuvo una respuesta válida del servidor al que intentó reenviarla (reverse proxy) 
 
 ![alt text](imgs/evidencias/parte9.png)
 
 - ¿Por qué ocurre? 
 
-       Porque `localhost` intenta buscar dentro del propio contenedor de Nginx el puerto 3000, pero no hay nada ahí, pues en este contenedor solo se está escuchando el puerto 8080. 
+Porque `localhost` intenta buscar dentro del propio contenedor de Nginx el puerto 3000, pero no hay nada ahí, pues en este contenedor solo se está escuchando el puerto 8080. 
 
 - ¿Por qué localhost no representa al contenedor api? 
 
-       Porque `localhost` siempre apunta hacia el mismo contenedor/servicio que hace la petición, entonces se llama a sí mismo. 
+Porque `localhost` siempre apunta hacia el mismo contenedor/servicio que hace la petición, entonces se llama a sí mismo. 
 
 - ¿Cómo solucionaría el problema? 
 
-       Revertir el cambio a de 'localhost` a `api`. Docker traduce automáticamente `api` como el nombre del servicio a su IP interna correspondiente. Después se reconstruye el servicio con docker compose down, up. 
+Revertir el cambio a de 'localhost` a `api`. Docker traduce automáticamente `api` como el nombre del servicio a su IP interna correspondiente. Después se reconstruye el servicio con docker compose down, up. 
 
 - ¿Qué comando utilizaría para verificar las redes Docker? 
 
-       `docker network ls` lista las redes existentes. `docker network inspect taller2-nginxdocker_default` muestra más información de la red para este proyecto. 
-       ![alt text](imgs/evidencias/image.png)
+`docker network ls` lista las redes existentes. `docker network inspect taller2-nginxdocker_default` muestra más información de la red para este proyecto. 
+
 ## Preguntas
 
 - ¿Cuál es la diferencia entre el puerto del contenedor y el puerto publicado en el host?
 
-       El puerto del contenedor es el puerto en el que la aplicación dentro del contenedor está escuchando. Este puerto solo es accesible directamente desde otros contenedores en la misma red de Docker. El puerto publicado es el puerto en el host que Docker redirige hacia el puerto interno del contenedor, este es el que permite poder visualizar http://localhost:3000/health. 
+El puerto del contenedor es el puerto en el que la aplicación dentro del contenedor está escuchando. Este puerto solo es accesible directamente desde otros contenedores en la misma red de Docker. El puerto publicado es el puerto en el host que Docker redirige hacia el puerto interno del contenedor, este es el que permite poder visualizar http://localhost:3000/health. 
 
 - ¿Por qué http://api:3000 funciona entre contenedores, mientras que http://localhost:3000 no representa correctamente al contenedor api? 
 
-       “localhost” siempre se refiere al propio contenedor que hace la petición: si al configurar nginx se usase proxy_pass http://localhost:3000, estaría buscando un servicio escuchando en el puerto 3000 desde el mismo contenedor de nginx. “api” es el nombre del servicio configurado en compose.yaml, docker se encarga de traducir ese nombre a la ip interna real dentro de la red de Docker. 
+“localhost” siempre se refiere al propio contenedor que hace la petición: si al configurar nginx se usase proxy_pass http://localhost:3000, estaría buscando un servicio escuchando en el puerto 3000 desde el mismo contenedor de nginx. “api” es el nombre del servicio configurado en compose.yaml, docker se encarga de traducir ese nombre a la ip interna real dentro de la red de Docker. 
 
 - Explique la diferencia entre ports y expose en Docker Compose.
 
-       ports publica los puertos al host, haciendo que el puerto sea accesible desde fuera del entorno de Docker. 
+ports publica los puertos al host, haciendo que el puerto sea accesible desde fuera del entorno de Docker. 
 
-       expose solo documenta el puerto para la red interna de Docker. No abre los puertos como sí lo hace ports. 
+expose solo documenta el puerto para la red interna de Docker. No abre los puertos como sí lo hace ports. 
 
