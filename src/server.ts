@@ -1,6 +1,10 @@
 import express from 'express';
 
 const PORT = process.env.PORT;
+if(!PORT || Number.isNaN(Number(PORT))) {
+    console.error("La variable de entorno PORT no está definida o no es válida");
+    process.exit(1);
+}
 
 type Product = {
     id: number;
@@ -40,9 +44,17 @@ function main() {
 
     app.get("/api/products/:id", (req, res) => {
         const id : number = Number(req.params.id);
+
+        if(Number.isNaN(id)) {
+            res.status(400).json({
+                status : "invalid product id"
+            })
+            return;
+        }
+
         const product : Product|undefined = products[id];
         if (product == undefined) {
-            res.json({
+            res.status(404).json({
                 status : "product not found"
             })
         } else {
@@ -52,6 +64,10 @@ function main() {
             })
         }
     })
+
+    app.use((_, res) => {
+        res.status(404).json({ status: "not found" });
+    });
 
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`)
