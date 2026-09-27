@@ -4,11 +4,11 @@ WORKDIR /backend
 
 COPY package.json .
 COPY pnpm-lock.yaml .
-COPY tsconfig.json .
-COPY src ./src
 
 RUN npm install -g pnpm
 RUN pnpm install
+
+COPY tsconfig.json .
+COPY src ./src
+
 CMD ["node", "./src/server.ts"]
-
-
