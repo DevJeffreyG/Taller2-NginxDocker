@@ -28,6 +28,16 @@ function main() {
         })
     })
 
+    app.get("/health_redis", async (_, res) => {
+        const response = await fetch("http://redis:4000/health");
+        const server2Data = await response.json();
+
+        res.json({
+            status  : server2Data.status,
+            service : "redis"
+        })
+    })
+
     app.get("/health", (_, res) => {
         res.json({
             status  : "ok",
