@@ -3,6 +3,8 @@ services:
     build: .
     environment:
       PORT: 3000
+    expose:
+      - "3000"
 
   nginx:
     image: nginx:latest
